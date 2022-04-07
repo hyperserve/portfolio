@@ -1,0 +1,25 @@
+version: "3.3"
+services:
+  portfolio_db:
+    image: postgres:13
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  portfolio:
+    build: .
+    restart: always
+    depends_on:
+      - portfolio_db
+    ports:
+      - 4000:4000
+    env_file:
+      - portfolio-conf.env
+
+volumes:
+  pgdata:
+    driver: local
